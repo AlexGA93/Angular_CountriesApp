@@ -1,27 +1,93 @@
 # AngularCountriesApp
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.2.6.
+## Structure
 
-## Development server
+We are going to create a couple of modules to start building our app's structure. 
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+- modules
 
-## Code scaffolding
+    In the first place we need to create a 'shared' module where we'll create every component that will be shared for the entire app's modules(e.g: sidebar, footer, menu, etc).
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+    ```
+    ng g m shared
+    ```
+    ```
+    ng g m countries
+    ```
+- components
+    - sidebar
 
-## Build
+        In secon place, we have created the modules that we'll need in our app but we need the components to give them visual properties and logic
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+        In the case of our 'shared' module, we'll work with the sidebar component, so we'll create it inside this folder:
 
-## Running unit tests
+        ```
+        ng g c shared/sidebar --skipTests -is
+        ```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+        **NOTE**: Remember to export the shared sidebar component to the entire app by the export's property at the module.
 
-## Running end-to-end tests
+        ```
+        @NgModule({
+        declarations: [
+            SidebarComponent
+        ],
+        exports:[
+            SidebarComponent
+        ],
+        imports: [
+            CommonModule
+        ]
+        })
+        export class SharedModule { }
+        ```
+    - countries
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+        In this module we'll create our components, interfaces, pages and services
+        ```
+        ng g c countries/pages/byCapital --skipTests -is
+        ng g c countries/pages/byCountry --skipTests -is
+        ng g c countries/pages/byRegion --skipTests -is
+        ng g c countries/pages/showCountry --skipTests -is
+        ```
+        **NOTE**: Remember to export the countrie's components to the entire app by the export's property at the module.
+        ```
+        @NgModule({
+        declarations: [
+            ByCapitalComponent,
+            ByCountryComponent,
+            ByRegionComponent,
+            ShowCountryComponent
+        ],
+        exports:[
+            ByCapitalComponent,
+            ByCountryComponent,
+            ByRegionComponent,
+            ShowCountryComponent
+        ],
+        imports: [
+            CommonModule
+        ]
+        })
+        export class CountriesModule { }
+        ```
+Don't forget to import the created modules to the main app.module.ts script:
+```
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+    CountriesModule,
+    SharedModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
 
-## Further help
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+
