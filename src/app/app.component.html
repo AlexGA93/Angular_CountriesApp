@@ -3,14 +3,19 @@
         <h2>Search: </h2>
         <hr>
         <ul class="list-group">
-            <li class="list-group-item">Search by Country</li>
-            <li class="list-group-item">Search by Region</li>
-            <li class="list-group-item">Search by Capital</li>
+            <li routerLink="" routerLinkActive="active" class="list-group-item">
+                Search by Country
+            </li>
+            <li routerLink="region" routerLinkActive="active" class="list-group-item">
+                Search by Region
+            </li>
+            <li routerLink="capital" routerLinkActive="active" class="list-group-item">
+                Search by Capital
+            </li>
         </ul>
     </div>
     <!-- Dynamic content by the route -->
     <div class="col">
-        <h2>By Capital</h2>
-        <hr>
+        <router-outlet></router-outlet>
     </div>
 </div>
