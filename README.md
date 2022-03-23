@@ -186,7 +186,4 @@ Define our app's routes it's a simple task that we can complete in a couple of s
 
     - [ routerLinkActiveOptions]="{exact: true}" is declared in the main route because we want to apply routerLinkActive's functionallity only if the route is exact the declared one on our route's module.
 
-
-
-
-
+## Searching Logic
