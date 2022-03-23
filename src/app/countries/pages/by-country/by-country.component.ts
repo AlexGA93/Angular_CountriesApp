@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CountriesService } from '../../services/countries.service';
 
 @Component({
   selector: 'app-by-country',
@@ -6,11 +7,17 @@ import { Component, OnInit } from '@angular/core';
   styles: [
   ]
 })
-export class ByCountryComponent implements OnInit {
+export class ByCountryComponent {
+  query: string = "";
 
-  constructor() { }
+  // service injection
+  constructor(private countriesService: CountriesService) {}
 
-  ngOnInit(): void {
+  search() {
+    // console.log(this.query);
+    this.countriesService
+    .searchCountry(this.query)
+    .subscribe(res => console.log(res));
+    
   }
-
 }
