@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CountriesService } from '../../services/countries.service';
+import { Country } from '../../interfaces/country.interface';
 
 @Component({
   selector: 'app-by-country',
@@ -13,20 +14,31 @@ export class ByCountryComponent {
   // error handling
   isError: boolean = false;
 
+  // countries array
+  countries: Country[] = [];
+
   // service injection
   constructor(private countriesService: CountriesService) {}
 
-  search() {
+  search(event: string) {
     // error handling
     this.isError = false;
+    // update query with data issued by the input component
+    this.query = event;
 
-
-    // console.log(this.query);
+    // http request
     this.countriesService
     .searchCountry(this.query)
-    .subscribe(
-      (res) => {console.log(res);}, 
-      (err) => {this.isError = true;}, 
+    .subscribe({
+      next: (res) => {
+        this.countries = res;
+        console.log(res);
+      },
+      error: (e) => this.isError = true,
+      complete: () => console.info('Http request complete') 
+    }
+      // (res) => {console.log(res);}, 
+      // (err) => {this.isError = true;}, 
       );
     
   }

@@ -3,49 +3,20 @@
 
 <div class="row">
     <div class="col">
-        <form (ngSubmit)="search()" autocomplete="off">
-            <input type="text"
-                name="seacrh"
-                class="form-control"
-                [(ngModel)]="query"
-                placeholder="Search by country...">
-        </form>
+        <!-- This component must issue the search result and link it to the by-country's search method -->
+        <app-country-input (onEnter)="search( $event )"></app-country-input>
     </div>
 </div>
 
 <hr>
 
-<div *ngIf="isError"
-class="alert alert-danger">
+<div *ngIf="isError" class="alert alert-danger">
     Search doesn't return anything to the value: '{{ query }}'
 </div>
 
-<div *ngIf="!isError || countries.length > 0"
-class="row">
+<div *ngIf="!isError || countries.length > 0" class="row">
     <div class="col">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th> # </th>
-                    <th> Flag </th>
-                    <th> Name </th>
-                    <th> Population </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let country of countries; let i = index">
-                    <td> {{ i + 1 }} </td>
-                    <td>
-                        <img class="small-flag" [src]="country.flags.png" alt="country_flag">
-                    </td>
-                    <td> {{ country.name}} </td>
-                    <td> {{ country.population | number}} </td>
-                    <td>
-                        <a [routerLink]="['/country', country.alpha2Code]">See...</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <!-- This component must extract data from the compponent -->
+        <app-country-table [countries]="countries"></app-country-table>
     </div>
 </div>
