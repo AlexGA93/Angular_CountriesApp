@@ -399,3 +399,4 @@ In second place we should edit our table to iterate the array that we've crated 
 ```
 
 **Notice** that when applied to an element in a template, makes that element a link that initiates navigation to a route. Navigation opens one or more routed components in one or more <router-outlet> locations on the page.
+

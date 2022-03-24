@@ -24,14 +24,5 @@ export class CountriesService {
 
     // send info to the element that calls method
     return this.http.get<Country[]>(url)
-
-    // alternative
-    /*
-    If request return an error, i want to return an empty array
-    */
-
-    // .pipe(
-    //   catchError((err) => of([])) // returns an empty object as a new observable
-    // );
   }
 }
