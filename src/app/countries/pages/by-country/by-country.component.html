@@ -15,11 +15,13 @@
 
 <hr>
 
-<div class="alert alert-danger">
-    Search doesn't return anything
+<div *ngIf="isError"
+class="alert alert-danger">
+    Search doesn't return anything to '{{ query }}'
 </div>
 
-<div class="row">
+<div *ngIf="!isError"
+class="row">
     <div class="col">
         <table class="table table-hover">
             <thead>

@@ -187,3 +187,163 @@ Define our app's routes it's a simple task that we can complete in a couple of s
     - [ routerLinkActiveOptions]="{exact: true}" is declared in the main route because we want to apply routerLinkActive's functionallity only if the route is exact the declared one on our route's module.
 
 ## Searching Logic
+
+In this point We're going to define our search logic with the error handling and typescript interfaces declarations:
+
+- 1. Html search tag
+    ```
+    <h2>By Country</h2>
+    <hr>
+
+    <div class="row">
+        <div class="col">
+            <form (ngSubmit)="search()" autocomplete="off">
+                <input type="text"
+                    name="seacrh"
+                    class="form-control"
+                    [(ngModel)]="query"
+                    placeholder="Search by country...">
+            </form>
+        </div>
+    </div>
+
+    <hr>
+    ```
+    ```
+    <!-- Showing table only if search results is positive -->
+    <div *ngIf="isError"
+    class="alert alert-danger">
+        Search doesn't return anything to '{{ query }}'
+    </div>
+    ```
+    ```
+    <!-- Showing table only if search results is positive -->
+    <div *ngIf="!isError" class="row">
+
+        ... table ...
+    
+    </div>
+    ```
+- 2. Search logic component
+    ```
+    export class ByCountryComponent {
+
+        // initial query state
+        query: string = "";
+
+        // error handling
+        isError: boolean = false;
+
+        // service injection
+        constructor(private countriesService: CountriesService) {}
+
+        search() {
+
+            // error handling declared as false in every search process
+            this.isError = false;
+
+            // http request by the service and error handling
+            this.countriesService
+            .searchCountry(this.query)
+            .subscribe(
+            (res) => {console.log(res);}, 
+            (err) => {this.isError = true;}, 
+            );
+            
+        }
+    }
+    ```
+- 3. Search logic service
+    ```
+    export class CountriesService {
+
+        // API url
+        private apiUrl: string = 'https://restcountries.com/v2';
+
+        // Service injection
+        constructor(private http: HttpClient) { }
+
+        // Https requests
+        searchCountry(query: string): Observable<Country[]>{
+
+            const url = `${this.apiUrl}/name/${query}`;
+
+            // send info to the element that calls method
+            return this.http.get<Country[]>(url)
+
+        }
+    }
+    ```
+- 4. Typescript types
+    To declare our Country's typescript interface we'll use as a example any successful http request's result (I recommend to use an API client like [Insomnia](https://insomnia.rest/) or [Postman](https://www.postman.com/product/api-client/) ) and we'll go to [QuickType](https://app.quicktype.io/).
+
+        Once we go to the main page we should paste our request's result and specify typescript as a language and select the 'interfaces only' option. Now we can copy the content and paste in our interface's folder.
+    ```
+    export interface Country {
+        name:           string;
+        topLevelDomain: string[];
+        alpha2Code:     string;
+        alpha3Code:     string;
+        callingCodes:   string[];
+        capital:        string;
+        altSpellings:   string[];
+        subregion:      string;
+        region:         string;
+        population:     number;
+        latlng:         number[];
+        demonym:        string;
+        area:           number;
+        gini:           number;
+        timezones:      string[];
+        borders:        string[];
+        nativeName:     string;
+        numericCode:    string;
+        flags:          Flags;
+        currencies:     Currency[];
+        languages:      Language[];
+        translations:   Translations;
+        flag:           string;
+        regionalBlocs:  RegionalBloc[];
+        cioc:           string;
+        independent:    boolean;
+    }
+
+    export interface Currency {
+        code:   string;
+        name:   string;
+        symbol: string;
+    }
+
+    export interface Flags {
+        svg: string;
+        png: string;
+    }
+
+    export interface Language {
+        iso639_1:   string;
+        iso639_2:   string;
+        name:       string;
+        nativeName: string;
+    }
+
+    export interface RegionalBloc {
+        acronym: string;
+        name:    string;
+    }
+
+    export interface Translations {
+        br: string;
+        pt: string;
+        nl: string;
+        hr: string;
+        fa: string;
+        de: string;
+        es: string;
+        fr: string;
+        ja: string;
+        it: string;
+        hu: string;
+    }
+
+    ```
+    **NOTICE** that we've generated a typescript interface to any country search with every sub interface and type. This is the reason to specify in out service's observable and get request as Country type.
