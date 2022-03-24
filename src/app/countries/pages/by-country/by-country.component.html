@@ -17,10 +17,10 @@
 
 <div *ngIf="isError"
 class="alert alert-danger">
-    Search doesn't return anything to '{{ query }}'
+    Search doesn't return anything to the value: '{{ query }}'
 </div>
 
-<div *ngIf="!isError"
+<div *ngIf="!isError || countries.length > 0"
 class="row">
     <div class="col">
         <table class="table table-hover">
@@ -34,14 +34,16 @@ class="row">
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th> 1 </th>
-                    <th> Flag </th>
-                    <th> Name </th>
-                    <th> Population </th>
-                    <th>
-                        <a href="/country/cri">See...</a>
-                    </th>
+                <tr *ngFor="let country of countries; let i = index">
+                    <td> {{ i + 1 }} </td>
+                    <td>
+                        <img class="small-flag" [src]="country.flags.png" alt="country_flag">
+                    </td>
+                    <td> {{ country.name}} </td>
+                    <td> {{ country.population | number}} </td>
+                    <td>
+                        <a [routerLink]="['/country', country.alpha2Code]">See...</a>
+                    </td>
                 </tr>
             </tbody>
         </table>

@@ -347,3 +347,55 @@ In this point We're going to define our search logic with the error handling and
 
     ```
     **NOTICE** that we've generated a typescript interface to any country search with every sub interface and type. This is the reason to specify in out service's observable and get request as Country type.
+
+## Rendering Table's info with API's request result
+
+To render our API's request into our html code we should assign to an empty array in our **by-country.component.ts**:
+
+```
+export class ByCountryComponent {
+  ...
+
+  // data to render
+  countries: Country[] = [];
+
+
+  search() {
+    // console.log(this.query);
+    this.countriesService
+    .searchCountry(this.query)
+    .subscribe(
+      (res) => {
+
+        // setting our api's result in the countries empty array
+        this.countries = res;
+        
+      }, 
+      (err) => {
+        this.isError = true;
+        this.countries = [];
+      }, 
+      );
+    
+  }
+}
+```
+In second place we should edit our table to iterate the array that we've crated in our ts component and render in any section the current value that we want to show:
+
+```
+<tbody>
+    <tr *ngFor="let country of countries; let i = index">
+        <td> {{ i + 1 }} </td>
+        <td>
+            <img class="small-flag" [src]="country.flags.png" alt="country_flag">
+        </td>
+        <td> {{ country.name}} </td>
+        <td> {{ country.population | number}} </td>
+        <td>
+            <a [routerLink]="['/country', country.alpha2Code]">See...</a>
+        </td>
+    </tr>
+</tbody>
+```
+
+**Notice** that when applied to an element in a template, makes that element a link that initiates navigation to a route. Navigation opens one or more routed components in one or more <router-outlet> locations on the page.
