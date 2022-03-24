@@ -10,14 +10,24 @@ import { CountriesService } from '../../services/countries.service';
 export class ByCountryComponent {
   query: string = "";
 
+  // error handling
+  isError: boolean = false;
+
   // service injection
   constructor(private countriesService: CountriesService) {}
 
   search() {
+    // error handling
+    this.isError = false;
+
+
     // console.log(this.query);
     this.countriesService
     .searchCountry(this.query)
-    .subscribe(res => console.log(res));
+    .subscribe(
+      (res) => {console.log(res);}, 
+      (err) => {this.isError = true;}, 
+      );
     
   }
 }
