@@ -3,5 +3,6 @@
         name="seacrh"
         class="form-control"
         [(ngModel)]="query"
+        (input)="pressedKey()"
         placeholder="Search by country...">
 </form>
